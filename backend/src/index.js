@@ -3,7 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { env, assertEnv } from './config/env.js';
-import { pool } from './config/db.js';
+import { initDb, getDriver } from './config/db.js';
 import { logger } from './utils/logger.js';
 import { requireAuth, setSessionCookie, clearSessionCookie, signSession } from './middleware/auth.js';
 import { findOrCreateUser } from './models/User.js';
@@ -24,7 +24,7 @@ app.use(express.json({ limit: '1mb' }));
 app.use(cookieParser());
 
 // Lightweight health check
-app.get('/api/health', (_req, res) => res.json({ ok: true }));
+app.get('/api/health', (_req, res) => res.json({ ok: true, driver: getDriver().driver, seed: getDriver().fallbackSeedApplied }));
 
 // Minimal single-user session: /api/auth/login signs a cookie for the MVP user.
 app.post('/api/auth/login', async (_req, res) => {
@@ -57,9 +57,8 @@ app.use((err, _req, res, _next) => {
 
 async function main() {
   assertEnv();
-  // Verify DB connectivity early
-  await pool.query('SELECT 1');
-  logger.info('✅ PostgreSQL connected');
+  // Verify DB connectivity early (falls back to an in-memory demo DB if needed)
+  await initDb();
 
   app.listen(env.port, () => logger.info(`🚀 API listening on ${env.appUrl}`));
   startJobs();

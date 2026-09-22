@@ -10,8 +10,9 @@ export const env = {
     userAgent: process.env.REDDIT_USER_AGENT || 'RedditAutoPost/0.1',
   },
   anthropicApiKey: process.env.ANTHROPIC_API_KEY || '',
-  sessionSecret: process.env.SESSION_SECRET || '',
-  encryptionKey: process.env.ENCRYPTION_KEY || '',
+  // Dev-only defaults so the demo works out of the box. Override in .env / production!
+  sessionSecret: process.env.SESSION_SECRET || (process.env.NODE_ENV === 'production' ? '' : 'dev-session-secret-change-me'),
+  encryptionKey: process.env.ENCRYPTION_KEY || (process.env.NODE_ENV === 'production' ? '' : '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef'),
   scanLimit: Number(process.env.SCAN_LIMIT || 50),
   cronEnabled: process.env.CRON_ENABLED !== 'false',
 };
@@ -19,8 +20,10 @@ export const env = {
 export function assertEnv() {
   const missing = [];
   if (!env.anthropicApiKey) missing.push('ANTHROPIC_API_KEY');
-  if (!env.sessionSecret) missing.push('SESSION_SECRET');
-  if (!env.encryptionKey) missing.push('ENCRYPTION_KEY');
+  if (process.env.NODE_ENV === 'production') {
+    if (!process.env.SESSION_SECRET) missing.push('SESSION_SECRET');
+    if (!process.env.ENCRYPTION_KEY) missing.push('ENCRYPTION_KEY');
+  }
   if (!env.reddit.clientId || !env.reddit.clientSecret) missing.push('REDDIT_CLIENT_ID / REDDIT_CLIENT_SECRET');
   if (missing.length) {
     console.warn(`⚠️ Missing environment variables: ${missing.join(', ')} (see backend/.env.example)`);

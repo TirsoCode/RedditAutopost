@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS posts (
   title_override      VARCHAR(300),
   upvotes             INT NOT NULL DEFAULT 0,
   comments            INT NOT NULL DEFAULT 0,
-  engagement_score    DECIMAL(10,2) NOT NULL DEFAULT 0,
+  engagement_score    NUMERIC(10,2) NOT NULL DEFAULT 0,
   created_at          TIMESTAMPTZ NOT NULL DEFAULT now(),
   published_at        TIMESTAMPTZ,
   updated_at          TIMESTAMPTZ NOT NULL DEFAULT now(),
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS post_stats (
   downvotes         INT,
   comments          INT NOT NULL DEFAULT 0,
   awards            INT NOT NULL DEFAULT 0,
-  engagement_score  DECIMAL(10,2) NOT NULL DEFAULT 0,
+  engagement_score  NUMERIC(10,2) NOT NULL DEFAULT 0,
   tracked_at        TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 

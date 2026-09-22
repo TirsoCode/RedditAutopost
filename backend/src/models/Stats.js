@@ -26,8 +26,8 @@ export async function getTopSubreddits(userId, limit = 5) {
   const { rows } = await query(
     `SELECT subreddit_name,
             COUNT(*) AS n,
-            ROUND(AVG(upvotes)) AS avg_upvotes,
-            ROUND(AVG(comments)) AS avg_comments,
+            ROUND(AVG(upvotes)::numeric) AS avg_upvotes,
+            ROUND(AVG(comments)::numeric) AS avg_comments,
             ROUND(AVG(engagement_score), 2) AS avg_engagement
      FROM posts
      WHERE user_id = $1 AND status = 'published'
@@ -41,7 +41,7 @@ export async function getTopSubreddits(userId, limit = 5) {
 
 export async function getEngagementHistory(userId, days = 7) {
   const { rows } = await query(
-    `SELECT date_trunc('day', ps.tracked_at)::date AS day,
+    `SELECT ps.tracked_at::date AS day,
             ROUND(AVG(ps.engagement_score), 2) AS engagement,
             SUM(ps.upvotes) AS upvotes,
             SUM(ps.comments) AS comments

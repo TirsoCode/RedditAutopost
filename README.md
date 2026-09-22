@@ -48,11 +48,13 @@ docker compose up -d
 
 ```bash
 cd backend
-cp .env.example .env   # fill in your keys
+cp .env.example .env   # fill in your keys (optional for the demo)
 npm install
-npm run db:migrate
-npm run dev            # http://localhost:4000
+npm run db:migrate      # only needed if you use PostgreSQL
+npm run dev             # http://localhost:4000
 ```
+
+> **💡 No Postgres installed? No problem.** If `DATABASE_URL` is missing or unreachable, the backend automatically falls back to an **in-memory demo database (pg-mem)** with sample data. Great for trying the dashboard locally — data resets on restart. Run `npm run smoke` for an emulator-based check of the schema + data layer.
 
 ### 3. Frontend
 
