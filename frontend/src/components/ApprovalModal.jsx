@@ -25,7 +25,7 @@ export default function ApprovalModal({ post, onClose, onSaved }) {
       <div className="modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-head">
           <h3>Editar borrador</h3>
-          <button className="btn btn-ghost" onClick={onClose}>✕</button>
+          <button className="btn btn-ghost" onClick={onClose}>Cerrar</button>
         </div>
 
         <div className="modal-original">

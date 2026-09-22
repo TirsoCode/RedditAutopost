@@ -53,7 +53,7 @@ export default function Settings() {
       </div>
 
       {error && <p className="error-text">{error}</p>}
-      {saved && <p className="success-text">Cambios guardados ✅</p>}
+      {saved && <p className="success-text">Cambios guardados</p>}
 
       <div className="card">
         <h2 className="section-title">Conexión con Reddit</h2>
@@ -77,9 +77,9 @@ export default function Settings() {
         <h2 className="section-title">Tu web (contexto para la IA)</h2>
 
         <div className="promo-badges" style={{ marginBottom: 14 }}>
-          <span className="chip chip-sub" style={{ fontWeight: 700 }}>📄 Promocionando CVMakerApp (tu web real)</span>
+          <span className="chip chip-sub" style={{ fontWeight: 700 }}>Promocionando CVMakerApp (tu web real)</span>
           <a className="chip chip-reason" href="https://github.com/TirsoCode/cvmakerapp" target="_blank" rel="noreferrer" style={{ textDecoration: 'none' }}>
-            Código en GitHub ↗
+            Código en GitHub
           </a>
         </div>
 

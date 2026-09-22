@@ -19,7 +19,6 @@ export default function Layout() {
       <header className="topbar">
         <div className="topbar-left">
           <NavLink to="/" className="logo">
-            <span className="logo-mark">🤖</span>
             Reddit<span>Auto</span>Post
           </NavLink>
           <nav>
@@ -36,8 +35,7 @@ export default function Layout() {
           </nav>
         </div>
         <a className="topbar-promo" href={PROMOTED.url} target="_blank" rel="noreferrer" title={PROMOTED.url}>
-          <span className="dot" />
-          Promocionando {PROMOTED.name} ↗
+          Promocionando {PROMOTED.name}
         </a>
       </header>
       <main className="content">

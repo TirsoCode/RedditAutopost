@@ -12,9 +12,9 @@ const PROMOTED = {
 };
 
 const STEPS = [
-  { icon: '🔍', title: 'Detecta', text: 'Escanea tus subreddits cada 6h y encuentra posts donde tu producto aporta valor.' },
-  { icon: '✍️', title: 'Redacta con IA', text: 'OpenRouter (modelo free) escribe respuestas naturales que mencionan tu web y tu código.' },
-  { icon: '✅', title: 'Aprueba y publica', text: 'Tú decides siempre: revisa el borrador, edítalo y solo entonces se publica.' },
+  { title: 'Detecta', text: 'Escanea tus subreddits cada 6h y encuentra posts donde tu producto aporta valor.' },
+  { title: 'Redacta con IA', text: 'OpenRouter (modelo free) escribe respuestas naturales que mencionan tu web y tu código.' },
+  { title: 'Aprueba y publica', text: 'Tú decides siempre: revisa el borrador, edítalo y solo entonces se publica.' },
 ];
 
 const fmt = (n) => (n == null ? '…' : Number(n).toLocaleString('es-ES', { maximumFractionDigits: 1 }));
@@ -46,7 +46,7 @@ export default function Dashboard() {
     <div>
       {/* ── Hero ─────────────────────────────────────────── */}
       <section className="hero">
-        <span className="hero-kicker">🤖 Automatización con supervisión humana</span>
+        <span className="hero-kicker">Automatización con supervisión humana</span>
         <h1>
           Tu web, recomendada en Reddit <span className="accent">con voz humana</span>
         </h1>
@@ -62,7 +62,6 @@ export default function Dashboard() {
 
       {/* ── Promoted product ─────────────────────────────── */}
       <section className="promo-card">
-        <div className="promo-icon">📄</div>
         <div className="promo-body">
           <div className="promo-title">{PROMOTED.name} — {PROMOTED.tagline}</div>
           <p>Tu producto promocionado: la IA lo menciona de forma natural en cada borrador, junto con su código.</p>
@@ -73,8 +72,8 @@ export default function Dashboard() {
           </div>
         </div>
         <div className="promo-links">
-          <a className="btn btn-primary" href={PROMOTED.url} target="_blank" rel="noreferrer">Abrir web ↗</a>
-          <a className="btn btn-outline" href={PROMOTED.github} target="_blank" rel="noreferrer">Ver código en GitHub ↗</a>
+          <a className="btn btn-primary" href={PROMOTED.url} target="_blank" rel="noreferrer">Abrir web</a>
+          <a className="btn btn-outline" href={PROMOTED.github} target="_blank" rel="noreferrer">Ver código en GitHub</a>
         </div>
       </section>
 
@@ -83,7 +82,7 @@ export default function Dashboard() {
         {STEPS.map((s, i) => (
           <div className="step" key={s.title}>
             <span className="step-num">{i + 1}</span>
-            <h3>{s.icon} {s.title}</h3>
+            <h3>{s.title}</h3>
             <p>{s.text}</p>
           </div>
         ))}
@@ -92,22 +91,18 @@ export default function Dashboard() {
       {/* ── Quick stats ──────────────────────────────────── */}
       <div className="stat-row" style={{ marginTop: 20 }}>
         <div className="stat">
-          <span className="stat-icon">📝</span>
           <strong>{drafts?.length ?? '…'}</strong>
           <span>Borradores pendientes</span>
         </div>
         <div className="stat">
-          <span className="stat-icon">👌</span>
           <strong>{approvedCount}</strong>
           <span>Aprobados por publicar</span>
         </div>
         <div className="stat">
-          <span className="stat-icon">🚀</span>
           <strong>{publishedCount}</strong>
           <span>Publicados</span>
         </div>
         <div className="stat">
-          <span className="stat-icon">📈</span>
           <strong>{fmt(stats?.avg_engagement)}</strong>
           <span>Engagement medio</span>
         </div>
@@ -123,7 +118,6 @@ export default function Dashboard() {
         </h2>
         {drafts && drafts.length === 0 && (
           <div className="empty">
-            <div className="empty-icon">🎉</div>
             <p>No hay borradores pendientes.</p>
             <p className="text-muted">El sistema escanea cada 6h y redacta con IA. Configura tu web y subreddits para empezar.</p>
           </div>

@@ -68,13 +68,13 @@ export default function SubredditList({ subreddits, onChanged }) {
                 />
                 <span className="slider"></span>
               </label>
-              <button className="btn btn-ghost btn-sm" onClick={() => remove(sub)}>✕</button>
+              <button className="btn btn-ghost btn-sm" onClick={() => remove(sub)}>Eliminar</button>
             </div>
           </li>
         ))}
       </ul>
 
-      {!subreddits.length && <p className="text-muted">Aún no hay subreddits. Añade el primero 👆</p>}
+      {!subreddits.length && <p className="text-muted">Aún no hay subreddits. Añade el primero</p>}
       {error && <p className="error-text">{error}</p>}
     </div>
   );

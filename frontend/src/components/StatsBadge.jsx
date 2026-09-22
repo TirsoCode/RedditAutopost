@@ -1,8 +1,8 @@
 export default function StatsBadge({ upvotes = 0, comments = 0 }) {
   return (
     <div className="stats-badge">
-      <span title="Upvotes">▲ {upvotes}</span>
-      <span title="Comentarios">💬 {comments}</span>
+      <span className="up" title="Upvotes">{upvotes} upvotes</span>
+      <span title="Comentarios">{comments} comentarios</span>
     </div>
   );
 }

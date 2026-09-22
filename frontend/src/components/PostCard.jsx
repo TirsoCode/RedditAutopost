@@ -46,7 +46,7 @@ export default function PostCard({ post, onChanged }) {
         <span className="chip chip-sub">r/{post.subreddit_name}</span>
         {post.spam_risk && (
           <span className={`chip chip-spam-${post.spam_risk}`}>
-            Spam: {RISK_LABELS[post.spam_risk] ?? post.spam_risk} {post.spam_risk === 'bajo' ? '✅' : ''}
+            Spam: {RISK_LABELS[post.spam_risk] ?? post.spam_risk}
           </span>
         )}
         <span className="chip chip-status">{post.status}</span>
@@ -70,12 +70,12 @@ export default function PostCard({ post, onChanged }) {
       )}
 
       {post.spam_suggestion && post.spam_risk === 'medio' && (
-        <p className="suggestion">💡 {post.spam_suggestion}</p>
+        <p className="suggestion">{post.spam_suggestion}</p>
       )}
 
       {isPublished ? (
         <div className="post-actions">
-          <a href={isPublished} target="_blank" rel="noreferrer" className="btn btn-primary">Ver en Reddit ↗</a>
+          <a href={isPublished} target="_blank" rel="noreferrer" className="btn btn-primary">Ver en Reddit</a>
           {post.upvotes > 0 && <StatsBadge upvotes={post.upvotes} comments={post.comments} />}
         </div>
       ) : (
