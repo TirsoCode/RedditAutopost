@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Build
+frontend/dist/
+backend/dist/
+
+# Logs
+*.log
+npm-debug.log*
+logs/
+
+# Editors
+.vscode/
+.idea/
+.DS_Store
+
+# Temp
+tmp/
+*.tmp
