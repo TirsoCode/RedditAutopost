@@ -1,6 +1,6 @@
 # RedditAutoPost 🤖
 
-**AI-assisted Reddit content tool** — monitors subreddits, drafts natural replies with Claude, and only publishes what you approve.
+**AI-assisted Reddit content tool** — monitors subreddits, drafts natural replies with OpenRouter (free model), and only publishes what you approve.
 
 See [`PLAN.md`](./PLAN.md) for the full product/technical plan.
 
@@ -11,7 +11,7 @@ See [`PLAN.md`](./PLAN.md) for the full product/technical plan.
 | Frontend | React 18 + Vite               |
 | Backend  | Node.js + Express (ES modules)|
 | DB       | PostgreSQL                    |
-| AI       | Claude API (Anthropic)        |
+| AI       | OpenRouter (free model, configurable) |
 | Reddit   | OAuth 2.0 + Reddit API (fetch)|
 | Cron     | node-cron                     |
 
@@ -28,7 +28,7 @@ RedditAutopost/
 │       ├── models/          # SQL data access (User, Post, Subreddit, RedditAuth)
 │       ├── middleware/      # auth guard
 │       ├── jobs/            # cron: monitor, redact, publish, stats
-│       └── utils/           # claudeAPI, redditAPI, encryption, logger
+│       └── utils/           # openrouterAPI, redditAPI, encryption, logger
 └── frontend/
     └── src/
         ├── pages/           # Dashboard, ApprovedPosts, SubredditConfig, Analytics, Settings
@@ -70,14 +70,16 @@ npm run dev            # http://localhost:5173 (proxies /api to :4000)
 | --- | --- |
 | `DATABASE_URL` | Postgres connection string |
 | `REDDIT_CLIENT_ID` / `REDDIT_CLIENT_SECRET` | From https://www.reddit.com/prefs/apps (type: *web app*, redirect URI `http://localhost:4000/api/auth/callback`) |
-| `ANTHROPIC_API_KEY` | Claude API key |
+| `OPENROUTER_API_KEY` | API key from https://openrouter.ai/keys |
+| `OPENROUTER_MODEL` | Model id (default: `meta-llama/llama-3.3-70b-instruct:free`) |
+| `GITHUB_URL` | Public repo of your promoted product, mentioned in replies |
 | `SESSION_SECRET` | Random string for signing the session cookie |
 | `ENCRYPTION_KEY` | 32-byte hex (`openssl rand -hex 32`) — encrypts stored Reddit tokens |
 | `APP_URL` / `FRONTEND_URL` | e.g. `http://localhost:4000` / `http://localhost:5173` |
 
 ## How it works
 
-1. **Every 6h** — scans monitored subreddits, filters relevant posts with Claude, stores candidates.
+1. **Every 6h** — scans monitored subreddits, filters relevant posts with OpenRouter, stores candidates.
 2. **Every 15m** — drafts replies for candidates (value-first, subtle mention, spam-risk check).
 3. **You review** — approve / edit / reject in the dashboard.
 4. **Publish** — approved posts go out (on click or via hourly cron, respecting your daily frequency cap).

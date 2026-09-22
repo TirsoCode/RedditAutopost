@@ -1,6 +1,6 @@
 import { getUser } from '../models/User.js';
 import { query } from '../config/db.js';
-import { draftReply, analyzeSpamRisk } from '../utils/claudeAPI.js';
+import { draftReply, analyzeSpamRisk } from '../utils/openrouterAPI.js';
 import { logger } from '../utils/logger.js';
 
 /**

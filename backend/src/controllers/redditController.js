@@ -1,7 +1,7 @@
 import { getUser } from '../models/User.js';
 import { listSubreddits } from '../models/Subreddit.js';
 import { getNewPosts } from '../utils/redditAPI.js';
-import { checkRelevance } from '../utils/claudeAPI.js';
+import { checkRelevance } from '../utils/openrouterAPI.js';
 import { insertCandidate, postExists } from '../models/Post.js';
 import { getAccessToken } from './authController.js';
 import { logger } from '../utils/logger.js';

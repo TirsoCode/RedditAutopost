@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { env } from './env.js';
 import { logger } from '../utils/logger.js';
+import { seedDemoData } from './seed.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const SCHEMA_PATH = path.join(__dirname, '..', '..', 'db', 'schema.sql');
@@ -63,54 +64,6 @@ async function createPgMemPool() {
       return client.end();
     },
   };
-}
-
-/** Insert a small, realistic demo dataset so the UI has content to show. */
-async function seedDemoData(client) {
-  const escape = (s) => String(s).replace(/'/g, "''");
-  const e = escape;
-  const { rows: [user] } = await client.query(
-    `INSERT INTO users (web_url, post_frequency, spam_threshold, reddit_username)
-     VALUES ('https://midemo.dev', 2, 'medio', 'demo_user')
-     RETURNING id`
-  );
-  const uid = user.id;
-
-  for (const name of ['python', 'webdev', 'learnprogramming']) {
-    await client.query(
-      `INSERT INTO subreddits (user_id, subreddit_name, active) VALUES ('${uid}', '${name}', TRUE)`
-    );
-  }
-
-  const drafts = [
-    ['python', 'd1', 'How to learn FastAPI properly?', 'I keep hitting walls with async and dependencies. Any good path?', 'Yo empecé con FastAPI hace unos meses y lo que más me ayudó fue montar primero un CRUD simple sin auth y añadir capas de a poco. Uso https://midemo.dev para generar los esquemas base y me ahorra muchísimo tiempo. Prueba a separar routers y Pydantic schemas desde el día uno.', 'bajo'],
-    ['webdev', 'd2', 'Best way to handle auth for a side project?', 'Session vs JWT vs OAuth providers. What do you recommend?', 'Para un side project yo iría con sesiones sobre cookies httpOnly + CSRF bien configurado: menos fricción que JWT y más fácil de hacer seguro. Si quieres mantener el stack simple, mi web https://midemo.dev te deja generar el flujo completo en minutos.', 'medio'],
-  ];
-  for (const [sub, pid, title, body, content, risk] of drafts) {
-    await client.query(
-      `INSERT INTO posts (user_id, subreddit_name, original_post_id, original_post_title, original_post_url, original_post_body, drafted_content, spam_risk, status, relevance_reason)
-       VALUES ('${uid}', '${e(sub)}', '${e(pid)}', '${e(title)}', 'https://www.reddit.com/r/${sub}/comments/${pid}', '${e(body)}', '${e(content)}', '${risk}', 'draft', 'Encaja con el servicio del usuario')`
-    );
-  }
-
-  const published = [
-    ['python', 'p1', 'Should I learn Django or FastAPI in 2026?', 'Great question. If you already know Django ORM you will feel at home; if you want async and API-first, FastAPI shines. I use https://midemo.dev to scaffold the boilerplate and focus on the business logic. Whatever you pick, build a real project, not tutorials.', 'bajo', 42, 7, 5.5],
-    ['webdev', 'p2', 'CSS frameworks are getting bloated', 'Honestly, for most projects vanilla CSS with custom properties is enough. I pair it with a tiny utility set from my own template (https://midemo.dev) and it is way lighter than pulling Tailwind for everything.', 'bajo', 28, 4, 3.1],
-    ['learnprogramming', 'p3', 'Stuck in tutorial hell, how do I get out?', 'Pick one tiny project and finish it this weekend: a to-do API, a CLI, whatever. Ship it ugly. I made my own boilerplate site (https://midemo.dev) exactly to skip the setup paralysis and just build.', 'medio', 61, 12, 8.2],
-  ];
-  for (const [sub, pid, title, body, risk, up, co, eng] of published) {
-    const { rows: [post] } = await client.query(
-      `INSERT INTO posts (user_id, subreddit_name, original_post_id, original_post_title, original_post_url, original_post_body, drafted_content, spam_risk, status, upvotes, comments, engagement_score, published_at, reddit_post_id)
-       VALUES ('${uid}', '${e(sub)}', '${e(pid)}', '${e(title)}', 'https://www.reddit.com/r/${sub}/comments/${pid}', '${e(body)}', '${e(body)}', '${risk}', 'published', ${up}, ${co}, ${eng}, now() - interval '3 days', 't3_${pid}')
-       RETURNING id`
-    );
-    for (let i = 0; i < 7; i++) {
-      await client.query(
-        `INSERT INTO post_stats (post_id, upvotes, comments, awards, engagement_score, tracked_at)
-         VALUES ('${post.id}', ${up - i}, ${co}, ${i % 3}, ${Math.max(0.5, eng - i * 0.4)}, now() - interval '${7 - i} days')`
-      );
-    }
-  }
 }
 
 /** Lazily initialise the DB (real Postgres first, pg-mem as fallback). */

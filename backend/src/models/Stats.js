@@ -11,11 +11,11 @@ export async function saveStat(postId, { upvotes, comments, awards, engagementSc
 export async function getOverview(userId) {
   const { rows } = await query(
     `SELECT
-       COUNT(*) FILTER (WHERE status = 'draft')   AS pending_drafts,
-       COUNT(*) FILTER (WHERE status = 'published') AS published,
-       COALESCE(AVG(upvotes)  FILTER (WHERE status = 'published'), 0) AS avg_upvotes,
-       COALESCE(AVG(comments) FILTER (WHERE status = 'published'), 0) AS avg_comments,
-       COALESCE(AVG(engagement_score) FILTER (WHERE status = 'published'), 0) AS avg_engagement
+       COUNT(CASE WHEN status = 'draft' THEN 1 END)              AS pending_drafts,
+       COUNT(CASE WHEN status = 'published' THEN 1 END)          AS published,
+       COALESCE(AVG(CASE WHEN status = 'published' THEN upvotes END), 0) AS avg_upvotes,
+       COALESCE(AVG(CASE WHEN status = 'published' THEN comments END), 0) AS avg_comments,
+       COALESCE(AVG(CASE WHEN status = 'published' THEN engagement_score END), 0) AS avg_engagement
      FROM posts WHERE user_id = $1`,
     [userId]
   );

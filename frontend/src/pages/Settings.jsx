@@ -75,16 +75,27 @@ export default function Settings() {
 
       <form className="card" onSubmit={save}>
         <h2 className="section-title">Tu web (contexto para la IA)</h2>
+
+        <div className="promo-badges" style={{ marginBottom: 14 }}>
+          <span className="chip chip-sub" style={{ fontWeight: 700 }}>📄 Promocionando CVMakerApp (tu web real)</span>
+          <a className="chip chip-reason" href="https://github.com/TirsoCode/cvmakerapp" target="_blank" rel="noreferrer" style={{ textDecoration: 'none' }}>
+            Código en GitHub ↗
+          </a>
+        </div>
+
         <label className="field">
           <span>Web URL</span>
           <input
             type="url"
             value={form.web_url}
             onChange={(e) => setForm({ ...form, web_url: e.target.value })}
-            placeholder="https://tuproducto.com"
+            placeholder="https://cvmakerapp.vercel.app"
             required
           />
-          <small className="text-muted">Es la "identidad" del bot: qué ofreces. La IA la usa para redactar y decidir relevancia.</small>
+          <small className="text-muted">
+            Es la "identidad" del bot: qué ofreces. La IA la usa para redactar, decidir relevancia y mencionar la web de forma
+            natural en cada respuesta (junto a tu repo de GitHub configurado en el backend).
+          </small>
         </label>
 
         <div className="fields-row">
